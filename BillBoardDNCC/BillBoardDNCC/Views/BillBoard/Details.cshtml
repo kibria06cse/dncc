@@ -1,0 +1,68 @@
+﻿@model BillBoardDNCC.Models.BillBoard
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BillBoard</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BillBoardType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BillBoardType.Name)
+        </dd>
+        <dt>
+            Area
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ZoneWardArea.Area)
+        </dd>
+        <dt>
+            Zone
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ZoneWardArea.ZoneNo)
+        </dd>
+        <dt>
+            Ward
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ZoneWardArea.WardNo)
+        </dd>
+        <dt>
+            Geo Location
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GeoLocation)
+        </dd>
+        <dt>
+            Address
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt>
+            Note
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Note)
+        </dd>      
+      
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

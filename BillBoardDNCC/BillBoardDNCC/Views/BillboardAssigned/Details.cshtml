@@ -1,0 +1,66 @@
+﻿@model BillBoardDNCC.Models.BillboardAssigned
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BillboardAssigned</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Billboard.BillBoardUniqueKey)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Billboard.BillBoardUniqueKey)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Company.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Company.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateFrom)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateFrom)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateTo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateTo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DNCCRefNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DNCCRefNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DNCCRefDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DNCCRefDate)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id, @class = "btn btn-primary" }) |
+    @Html.ActionLink("Back to List", "Index", new { @class = "btn btn-primary" })
+</p>

@@ -1,0 +1,157 @@
+﻿@model BillBoardDNCC.Models.Tax
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm("Create", "Tax", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.BillboardId)
+    @Html.HiddenFor(model => model.CompanyId)
+    @Html.HiddenFor(model => model.TotalTax, new { @id = "totalTax" })
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="form-horizontal">
+        <h4>Tax</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.BillboardId, "BillboardId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("BillboardId", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled", @id = "billboardId" })
+                @Html.ValidationMessageFor(model => model.BillboardId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CompanyId, "CompanyId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("CompanyId", null, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                @Html.ValidationMessageFor(model => model.CompanyId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Please Upload an Image", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <input type="file" name="photo" />
+                @Html.ValidationMessageFor(model => model.ChalanImageId, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalTax, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.EditorFor(model => model.TotalTax, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @id = "totalTax" } })
+                @Html.ValidationMessageFor(model => model.TotalTax, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                <div id="divDes">
+                    <textarea id="txtDes" class="form-control" style="color:#669900" rows="2"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PaidTaxAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PaidTaxAmount, new { htmlAttributes = new { @class = "form-control", @onchange = "taxCalc()", @id = "paidTax" } })
+                @Html.ValidationMessageFor(model => model.PaidTaxAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PaidTaxBankName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PaidTaxBankName, new { htmlAttributes = new { @class = "form-control", @id = "paidTax" } })
+                @Html.ValidationMessageFor(model => model.PaidTaxBankName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PurchaseOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PurchaseOrder, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PurchaseOrder, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BankAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BankAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BankAddress, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PaidTaxDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PaidTaxDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PaidTaxDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DueTaxAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DueTaxAmount, new { htmlAttributes = new { @class = "form-control", @id = "dueTax", @Value = @Model.DueTaxAmount, @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.DueTaxAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+    $(document).ready(function () {
+        var billboardId = $("#billboardId :selected").val();
+        $.ajax({
+            type: "POST",
+            url: '/Tax/GetTaxDescription',
+            dataType: 'json',
+            data: JSON.stringify({ billboardId: billboardId }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $("#txtDes").html(data);
+            }
+        });
+    });
+    $("#paidTax").change(function () {
+        var totalTax = $("#totalTax").val();
+        var paidTax = $("#paidTax").val();
+        var dueTax = totalTax - paidTax;
+        $("#dueTax").val(dueTax);
+    });
+    function taxCalc() {
+        var totalTax = $("#totalTax").val();
+        var $input = $('#paidTax');
+        var paidTax = $("#paidTax").val();
+
+        var dueTax = totalTax - paidTax;
+        $("#dueTax").val(dueTax);
+    }
+</script>

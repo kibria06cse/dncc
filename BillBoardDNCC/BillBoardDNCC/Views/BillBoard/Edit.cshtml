@@ -1,0 +1,133 @@
+﻿@model BillBoardDNCC.Models.BillBoard
+
+@{
+    ViewBag.Title = "Edit";
+    int totalZone = 0;
+    int totalWard = 0;
+}
+
+<h2>Edit</h2>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+@Scripts.Render("~/bundles/jquery")
+}
+
+
+
+
+@using (Html.BeginForm("Edit", "Billboard", FormMethod.Post, new { @onload = "loadZoneAndWard()" }))
+{
+    @Html.AntiForgeryToken()
+    if (ViewBag.totalZone != null)
+    {
+        totalZone = (int)ViewBag.totalZone;
+    }
+    if (ViewBag.totalWard != null)
+    {
+        totalWard = (int)ViewBag.totalWard;
+    }
+
+    <div class="form-horizontal">
+        
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.ZoneWardAreaId, new { @id="modelAreaId"})
+        <fieldset>
+            <legend>Bill Board</legend>
+            <div class="form-group">
+                @Html.Label("Billboard Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.DropDownListFor(model => model.BillBoardTypeId, ViewBag.BillBoardType as IEnumerable<SelectListItem>, "Select", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.BillBoardTypeId, "", new { @class = "text-danger" })
+                </div>
+                @Html.Label("Area", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.DropDownListFor(model => model.ZoneWardAreaId, ViewBag.AreaList as IEnumerable<SelectListItem>, "Select", new { @class = "form-control", @id = "areaId", @onchange = "loadZoneAndWard()" })
+                    @Html.ValidationMessageFor(model => model.ZoneWardAreaId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Zone", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.DropDownListFor(model => model.ZoneWardAreaId, Enumerable.Range(1, totalZone).Select(i => new SelectListItem() { Text = i.ToString(), Value = i.ToString() }), "Select", new { @class = "form-control", @id = "zoneId", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.ZoneWardAreaId, "", new { @class = "text-danger" })
+                </div>
+                @Html.Label("Ward", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.DropDownListFor(model => model.ZoneWardAreaId, Enumerable.Range(1, totalWard).Select(i => new SelectListItem() { Text = i.ToString(), Value = i.ToString() }), "Select", new { @class = "form-control", @id = "wardId", @disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.ZoneWardAreaId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("GeoLocation", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.GeoLocation, new { htmlAttributes = new { @class = "form-control " } })
+                    @Html.ValidationMessageFor(model => model.GeoLocation, "", new { @class = "text-danger" })
+                </div>
+                @Html.Label("Address", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control " } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+
+            </div>
+            <div class="form-group">
+                @Html.Label("Note", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control " } })
+                    @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+        </fieldset>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@*@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@
+
+
+<script>
+    //(function () {
+    //    loadZoneAndWard();
+
+    //})();
+    $(document).ready(function () {
+        loadZoneAndWard();
+    });
+        function loadZoneAndWard()
+        {
+            var areaId = $("#areaId :selected").val();
+            $.ajax({
+                type: "POST",
+                url: '/Billboard/GetZoneAndWard',
+                dataType: 'json',
+                data: JSON.stringify({ id: areaId }),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#zoneId").val(data.zone);
+                    $("#wardId").val(data.ward);
+                }
+            });
+
+            //$("#zoneId").val(areaId);
+            //$("#wardId").val(areaId);
+        }
+</script>

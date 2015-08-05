@@ -1,0 +1,78 @@
+﻿@model BillBoardDNCC.Models.Tax
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+@using (Html.BeginForm("Create", "Tax", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Tax</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.BillboardId, "BillboardId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.DropDownListFor(model => model.BillboardId, null, "Select", htmlAttributes: new { @class = "form-control", @onchange = "BillboardDescription()" })
+                @Html.ValidationMessageFor(model => model.BillboardId, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                <div id="divDes">
+                    <textarea id="txtDes" class="form-control" style="color:#669900" rows="3" readonly="readonly"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CompanyId, "CompanyId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.CompanyId, null, "Select", htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.CompanyId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @if (Model != null)
+        {
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" name="Search" value="Search" class="btn btn-primary" />
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script>
+    $(document).ready(function () { $("#divDes").hide() });
+
+        function BillboardDescription()
+        {
+            var BillboardId = $("#BillboardId :selected").val();
+            if (BillboardId == null || BillboardId == 0 || BillboardId == "")
+                $("#divDes").hide();
+            else
+                $.ajax({
+                    type: "POST",
+                    url: '/BillboardAssigned/GetBillboardDescription',
+                    dataType: 'json',
+                    data: JSON.stringify({ id: BillboardId }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $("#txtDes").html(data);
+                        $("#divDes").show();
+
+                    }
+                });
+        }
+</script>

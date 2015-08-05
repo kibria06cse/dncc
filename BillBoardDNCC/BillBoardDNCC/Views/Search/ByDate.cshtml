@@ -1,0 +1,75 @@
+﻿@using BillBoardDNCC.Models;
+@model SearchViewModel
+@{
+    ViewBag.Title = "ByDate";
+}
+
+@using (Html.BeginForm("SearchByDate", "Search", FormMethod.Post))
+{
+    <div class="form-horizontal">
+
+        <h2>Search By Date</h2>
+        <div class=" form-group col col-md-4">
+            @Html.EditorFor(model => model.From, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+        <div class="col col-md-4">
+            @Html.EditorFor(model => model.To, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+
+
+
+        <div class="col col-md-4">
+            <input type="submit" title="Search" onclick="searchByDateFunc()" />
+        </div>
+
+        @if (Model != null)
+        {
+            TempData["ReportName "] = "Report From " + Model.From.Value + "-To " + Model.To.Value;
+            <table class="table table-bordered table-hover">
+                <tr>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.BillBoards.FirstOrDefault().PlaceOfPermission)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BillBoards.FirstOrDefault().BillBoardType)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.BillBoards.FirstOrDefault().BillBoardSize)
+                    </th>
+                </tr>
+                @if (Model.BillBoards != null && Model.BillBoards.Count() > 0)
+                {
+                    TempData["Data"] = Model.BillBoards.ToList();
+                    foreach (var item in Model.BillBoards)
+                    {
+                        <tr>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PlaceOfPermission)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BillBoardType.Name)
+                            </td>
+                            <td>
+                                @{var size = item.BillBoardSize.Height + " X " + item.BillBoardSize.Width;}
+                                <span>@size</span>
+                            </td>
+                            <td style="margin:20px; padding:10px;"></td>
+
+                        </tr>
+                    }
+
+                }
+                else
+                {
+                    <tr><td colspan="9" style="text-align:center;">No record found</td> </tr>
+                }
+            </table>
+        }
+    </div>
+}
+
+
+
+     

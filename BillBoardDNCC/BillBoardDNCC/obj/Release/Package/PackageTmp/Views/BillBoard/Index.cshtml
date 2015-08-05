@@ -1,0 +1,126 @@
+﻿@model IEnumerable<BillBoardDNCC.Models.BillBoard>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        @*<label>Search:</label>*@
+        <div class="col col-md-4">
+            <label>By Area</label>
+            @Html.DropDownList("AreaId", ViewBag.AreaList as IEnumerable<SelectListItem>, "Select", new { @class = "form-control" })
+        </div>
+        <div class="col col-md-4">
+            <label>By Billboard Type</label>
+            @Html.DropDownList("TypeId", ViewBag.TypeList as IEnumerable<SelectListItem>, "Select", new { @class = "form-control" })
+        </div>
+        <div class="col col-md-4">
+            <br />
+            <input type="submit" value="Search" class="btn btn-primary" />
+        </div>
+    </div>
+    <br />
+}
+<p>
+    @if (User.IsInRole("admin"))
+    {
+        @Html.ActionLink("Create New", "Create", new { @class = "btn btn-primary" })
+    }
+    @*@Html.ActionLink("Export To Excell", "Export", null, new { @class = "btn pull-right btn-primary" })<br />*@
+</p>
+
+<table class="table table-bordered table-hover">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.BillBoardUniqueKey)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.BillBoardType)
+        </th>
+        <th>
+            Area
+        </th>
+
+        <th>
+            Zone
+        </th>
+        <th>
+            Ward
+        </th>
+
+        <th>
+            Geo Location
+        </th>
+        <th>
+            Address
+        </th>
+        <th>
+            Note
+        </th>
+
+        @if (User.IsInRole("admin"))
+        {
+            <th></th>
+        }
+
+    </tr>
+    @if (Model != null && Model.ToList().Count <= 0)
+    {
+        <tr>
+            <td colspan="9">No Record Found</td>
+        </tr>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BillBoardUniqueKey)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.BillBoardType.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ZoneWardArea.Area)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ZoneWardArea.ZoneNo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ZoneWardArea.WardNo)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.GeoLocation)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Note)
+                </td>
+
+
+                @if (User.IsInRole("admin"))
+                {
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    </td>
+                }
+            </tr>
+        }
+    }
+</table>
